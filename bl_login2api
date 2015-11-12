@@ -1,0 +1,32 @@
+#!/bin/bash
+
+
+RED='\033[0;31m'
+NC='\033[0m'
+
+if ! [ "$#" -eq 1 ]; then
+  echo -e "${RED}Available arguments are us/gb/au${NC}" 
+  exit
+fi
+
+USERNAME=$(cat .bl_credentials 2>/dev/null | cut -d ' ' -f1)
+PASSWORD=$(cat .bl_credentials 2>/dev/null | cut -d ' ' -f2)
+
+
+case "$1" in
+  ("us") cf api "https://api.ng.bluemix.net";;
+  ("gb") cf api "https://api.eu-gb.bluemix.net";;
+  ("au") cf api "https://api.au-syd.bluemix.net";;
+esac
+
+if [ -z "$USERNAME" ]; then
+  echo -e "${RED}File .bl_credentials is missing or username is not set. Not going to log in.${NC}"
+  exit
+fi
+
+if [ -z "$PASSWORD" ]; then
+  echo -e "${RED}File .bl_credentials is missing or password is not set. Not going to log in.${NC}"
+  exit
+fi
+
+cf login -u "$USERNAME" -p "$PASSWORD"
