@@ -8,10 +8,10 @@ if ! [ "$#" -eq 1 ]; then
   echo -e "${RED}Available arguments are us/gb/au${NC}" 
   exit
 fi
+CRED_FOLDER="$(dirname $(readlink -f $0))"
 
-USERNAME=$(cat .bl_credentials 2>/dev/null | cut -d ' ' -f1)
-PASSWORD=$(cat .bl_credentials 2>/dev/null | cut -d ' ' -f2)
-
+USERNAME=$(cat "$CRED_FOLDER/.bl_credentials" 2>/dev/null | cut -d ' ' -f1)
+PASSWORD=$(cat "$CRED_FOLDER/.bl_credentials" 2>/dev/null | cut -d ' ' -f2)
 
 case "$1" in
   ("us") cf api "https://api.ng.bluemix.net";;
